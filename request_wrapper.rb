@@ -1,3 +1,14 @@
+# Class for wrapping HTTParty requests
+# Objects are returned as parsed responses
+#  
+# Aditional features from the wrapper:
+#  * HEADERS (API did not work with default headers)
+#  * caching
+#  
+# Remarks:
+#  * caching only works with hardcoded params into URL string
+#  * caching is hardcoded to work with XML, altough files are stored with raw content
+
 class RequestWrapper
   # Hardcoded for working with XML responses
 
