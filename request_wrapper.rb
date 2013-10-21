@@ -10,8 +10,6 @@
 #  * caching is hardcoded to work with XML, altough files are stored with raw content
 
 class RequestWrapper
-  # Hardcoded for working with XML responses
-
   CACHE_DIR = "cache/"
   HEADERS = { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1309.0 Safari/537.17" }
 
