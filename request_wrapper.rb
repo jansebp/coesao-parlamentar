@@ -29,7 +29,7 @@ class RequestWrapper
       # Cache result
       cache!(response)
       
-      raise IOError if response.code != 200
+      raise IOError, response if response.code != 200
 
       return response.parsed_response
     end
