@@ -53,7 +53,7 @@ class DB
         voto varchar(10)
       );
       CREATE UNIQUE INDEX voto_id ON votos(id);
-
+      CREATE UNIQUE INDEX voto_nome ON votos(nome);
 
       create table orientacoes_bancada (
         id integer PRIMARY KEY AUTOINCREMENT,
