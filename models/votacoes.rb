@@ -33,8 +33,8 @@ class Votacoes
   end
 
   def save_votacao(votacao)
-    DB.open.execute("INSERT OR REPLACE INTO votacoes (resumo, objetivo, data) 
-              VALUES (?, ?, ?)", [votacao["Resumo"], votacao["ObjVotacao"], votacao["Data"]])
+    DB.open.execute("INSERT OR REPLACE INTO votacoes (proposicao_id, resumo, objetivo, data) 
+              VALUES (?, ?, ?, ?)", [self.proposicao.id, votacao["Resumo"], votacao["ObjVotacao"], votacao["Data"]])
 
     @id = DB.open.last_insert_row_id
 
