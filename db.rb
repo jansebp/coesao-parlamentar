@@ -37,11 +37,13 @@ class DB
 
       create table votacoes (
         id integer PRIMARY KEY AUTOINCREMENT,
+        proposicao_id integer,
         resumo text,
         objetivo text,
         data text
       );
       CREATE UNIQUE INDEX votacao_id ON votacoes(id);
+      CREATE INDEX votacao_proposicao_id ON votacoes(proposicao_id);
 
 
       create table votos (
@@ -53,7 +55,9 @@ class DB
         voto varchar(10)
       );
       CREATE UNIQUE INDEX voto_id ON votos(id);
+      CREATE INDEX voto_votacao_id ON votos(votacao_id);
       CREATE INDEX voto_nome ON votos(nome);
+
 
       create table orientacoes_bancada (
         id integer PRIMARY KEY AUTOINCREMENT,
@@ -62,6 +66,9 @@ class DB
         voto varchar(10)
       );
       CREATE UNIQUE INDEX orientacao_bancada_id ON orientacoes_bancada(id);
+      CREATE INDEX orientacao_bancada_votacao_id ON orientacoes_bancada(votacao_id);
+
+
     SQL
   end
 end
