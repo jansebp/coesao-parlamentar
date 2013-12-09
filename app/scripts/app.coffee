@@ -1,11 +1,10 @@
 'use strict'
 
-angular.module('votacoesCamaraApp', ['ui.router'])
-  .config ($stateProvider, $urlRouterProvider) ->
-    $urlRouterProvider.otherwise('/')
-
-    $stateProvider
-      .state 'root',
-        url: '/'
+angular.module('votacoesCamaraApp', ['ngRoute'])
+  .config ($routeProvider) ->
+    $routeProvider
+      .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
+      .otherwise
+        redirectTo: '/'
