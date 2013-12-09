@@ -8,7 +8,6 @@
   "dependencies": {
     "express": "~3.4.0"
   },
->>>>>>> 2eab212... Adiciona repositório do nosso app ao package.json
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
@@ -36,7 +35,8 @@
     "time-grunt": "~0.1.0"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": "0.10.x",
+    "npm": "1.2.x"
   },
   "scripts": {
     "test": "grunt test"
