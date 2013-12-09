@@ -11,8 +11,16 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+data/vendor
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+# Grunt/Bower
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
