@@ -29,7 +29,7 @@ def generate_edges
 
   votacoes_deputados.each_pair do |nome, voto|
     deputados_index[nome] = deputados.length
-    deputados << { "group" => 0, "party" => voto[3], "name" => nome }
+    deputados << { "name" => nome }
   end
 
   links = {}
@@ -80,7 +80,7 @@ def generate_edges
       votacoes1 = votos_deputado1.map { |x| x[1] }
       votacoes2 = votos_deputado2.map { |x| x[1] }
       votacoes_em_conjunto = (votacoes1 & votacoes2).length
-      formatted_links << { 'source' => source, 'target' => target, 'value' => value/votacoes_em_conjunto.to_f }
+      formatted_links << { 'source' => source, 'target' => target, 'value' => (value/votacoes_em_conjunto.to_f).round(3) }
     end
   end
   { 'links' => formatted_links, 'nodes' => deputados }
