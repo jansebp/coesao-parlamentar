@@ -8,9 +8,9 @@
 </div>
 <div class="row">
   <div class="col-md-10">
-    <adjacency-matrix data-filepath="data/matrix-pt-2007.json"></adjacency-matrix>
+    <adjacency-matrix data-filepath="filepath"></adjacency-matrix>
   </div>
   <div class="col-md-2">
-    Hola que tal?
+    <select ng-model="filepath" ng-options="fp for fp in filepaths"></select>
   </div>
 </div>
