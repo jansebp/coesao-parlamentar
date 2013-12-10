@@ -42,10 +42,10 @@ angular.module("votacoesCamaraApp")
 
     _draw = (element, matrix) ->
       svg = _drawSvg(element) if not svg?
-      rows = _drawRows(svg, matrix)
-      columns = _drawColumns(svg, matrix)
+      _drawRows(svg, matrix)
+      _drawColumns(svg, matrix)
 
-      rows.each(_colorizeRows)
+      svg.selectAll('.row').each(_colorizeRows)
 
     _drawSvg = (element) ->
       svgEl = d3.select(element).append("svg")
@@ -81,16 +81,18 @@ angular.module("votacoesCamaraApp")
       columns
 
     _colorizeRows = (rows) ->
-      element = d3.select(this).selectAll(".cell")
+      cells = d3.select(this).selectAll(".cell")
         .data(rows.filter((d) -> d.z))
 
-      element.enter().append("rect")
+      cells.enter().append("rect")
         .attr("class", "cell")
 
-      element.attr("x", (d) -> x(d.x) )
+      cells.attr("x", (d) -> x(d.x) )
         .attr("width", x.rangeBand())
         .attr("height", x.rangeBand())
         .style("fill", (d) -> color(d.z))
+
+      cells.exit().remove()
 
     _createGroups = (svg, matrix, className, transform) ->
       groups = svg.selectAll(".#{className}")
