@@ -1,7 +1,8 @@
 'use strict'
 
 angular.module('votacoesCamaraApp')
-  .controller 'MainCtrl', ($scope) ->
+  .controller 'MainCtrl', ($scope, parties) ->
+    $scope.parties = parties
     $scope.filepaths = [
       "data/matrix-pt-2004.json"
       "data/matrix-pt-2005.json"

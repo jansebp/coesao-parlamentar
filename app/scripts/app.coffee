@@ -6,5 +6,8 @@ angular.module('votacoesCamaraApp', ['ngRoute'])
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
+      .when '/:party_id/:year',
+        templateUrl: 'views/party.html'
+        controller: 'PartyCtrl'
       .otherwise
         redirectTo: '/'

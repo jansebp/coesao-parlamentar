@@ -41,13 +41,16 @@ angular.module("votacoesCamaraApp")
         _draw(element, matrix)
 
     _draw = (element, matrix) ->
-      svg = _drawSvg(element) if not svg?
+      svg = _drawSvg(element)
       _drawRows(svg, matrix)
       _drawColumns(svg, matrix)
 
       svg.selectAll('.row').each(_colorizeRows)
 
     _drawSvg = (element) ->
+      svgAlreadyInitialized = svg and d3.select(element).select("svg")[0][0]?
+      return svg if svgAlreadyInitialized
+
       svgEl = d3.select(element).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)

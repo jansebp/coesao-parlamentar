@@ -2,7 +2,7 @@ require "csv"
 require "json"
 require "./db"
 
-YEAR = '2013'
+YEAR = '2007'
 FILEPATH = "matrix.json"
 
 def generate_nodes
@@ -14,7 +14,7 @@ def generate_edges
   deputados_index = {}
   links = {}
   votos = db.execute <<-eos
-    SELECT * FROM votos WHERE voto IN ("Sim", "Não") AND
+    SELECT * FROM votos WHERE partido='PMDB' AND voto IN ("Sim", "Não") AND
       votacao_id IN
       (SELECT id FROM votacoes WHERE
        data > date("#{YEAR}-01-01") AND data < date("#{YEAR}-12-31"));
