@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('votacoesCamaraApp', ['ngRoute'])
+angular.module('votacoesCamaraApp', ['ngRoute', 'nvd3ChartDirectives'])
   .config ($routeProvider) ->
     $routeProvider
       .when '/',

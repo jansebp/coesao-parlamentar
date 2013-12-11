@@ -9,7 +9,9 @@
     "es5-shim": "~2.1.0",
     "angular-ui-router": "~0.2.6",
     "angular-route": "~1.2.4",
-    "d3": "~3.3.11"
+    "d3": "~3.3.11",
+    "angularjs-nvd3-directives": "~0.0.4-beta",
+    "nvd3": "~1.1.14-beta"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.4",

@@ -18,13 +18,13 @@
 <div class="scales">
   <div class="scale" style="background-color: {{scale.color}}; width: {{scale.width}}%" ng-repeat="scale in scales">
     <span ng-show="$first">
-      &#x2264; {{scale.threshold | percentual}}
+      &#x2264; {{scale.threshold | roundedPercentual}}
     </span>
     <span ng-show="$middle">
-      &#x2264; {{scale.threshold | percentual}}
+      &#x2264; {{scale.threshold | roundedPercentual}}
     </span>
     <span ng-show="$last">
-      &gt; {{scales[$index - 1].threshold | percentual}}
+      &gt; {{scales[$index - 1].threshold | roundedPercentual}}
     </span>
   </div>
 </div>

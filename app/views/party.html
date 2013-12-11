@@ -5,10 +5,12 @@
   </p>
 </div>
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-9">
     <adjacency-matrix data-graph="graph"></adjacency-matrix>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-3">
     <select ng-model="year" ng-options="year for year in party.years"></select>
+    <p>{{graph.nodes.length}} deputados</p>
+    <histogram data-graph="graph"></histogram>
   </div>
 </div>
