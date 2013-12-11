@@ -25,8 +25,6 @@ angular.module("votacoesCamaraApp")
 
         data.links.forEach (link) ->
           matrix[link.source][link.target].z += link.value
-          matrix[link.source][link.source].z += link.value
-          matrix[link.target][link.target].z += link.value
           matrix[link.source].name = nodes[link.source].name
           nodes[link.source].count += link.value
           nodes[link.target].count += link.value
