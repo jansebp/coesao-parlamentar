@@ -6,6 +6,9 @@ angular.module("votacoesCamaraApp")
     width = 720
     height = 720
     
+    transitionDuration = 2000
+    transitionStartingPoint = height * 1.1
+
     x = d3.scale.ordinal().rangeBands([0, width])
     color = d3.scale.quantile().domain([0.5, 1])
               .range(["#225ea8", "#41b6c4", "#a1dab4",  # Blueish
@@ -42,7 +45,10 @@ angular.module("votacoesCamaraApp")
       svg.selectAll('.row').each(_colorizeRows)
 
     _drawRows = (svg, matrix) ->
-      rows = _createGroups(svg, matrix, "row", (d, i) -> "translate(0, #{x(i)})")
+      transform = (d, i) -> "translate(0, #{x(i)})"
+      exitTransform = (d, i) -> "translate(0, #{transitionStartingPoint})"
+      rows = _createGroups(svg, matrix, "row", transform, exitTransform)
+      rows.attr("transform", "translate(0, #{-transitionStartingPoint})")
 
       _drawLabels(rows)
          .attr("x", -6)
@@ -51,7 +57,10 @@ angular.module("votacoesCamaraApp")
       rows
 
     _drawColumns = (svg, matrix) ->
-      columns = _createGroups(svg, matrix, "column", (d, i) -> "translate(#{x(i)})rotate(-90)")
+      transform = (d, i) -> "translate(#{x(i)})rotate(-90)"
+      exitTransform = (d, i) -> "translate(#{transitionStartingPoint})rotate(-90)"
+      columns = _createGroups(svg, matrix, "column", transform, exitTransform)
+      columns.attr("transform", "translate(#{-transitionStartingPoint})rotate(-90)")
 
       _drawLabels(columns)
          .attr("x", 6)
@@ -73,13 +82,13 @@ angular.module("votacoesCamaraApp")
 
       cells.exit().remove()
 
-    _createGroups = (svg, matrix, className, transform) ->
+    _createGroups = (svg, matrix, className, transform, exitTransform) ->
       groups = svg.selectAll(".#{className}")
          .data(matrix, (d, i) -> d.name)
       g = groups.enter().append("g")
          .attr("class", className)
-      groups.attr("transform", transform)
-      groups.exit().remove()
+      groups.transition().duration(transitionDuration).attr("transform", transform)
+      groups.exit().transition().duration(transitionDuration).attr("transform", exitTransform).remove()
       g
 
     _drawLabels = (element) ->
