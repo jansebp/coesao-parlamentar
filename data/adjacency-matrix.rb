@@ -46,17 +46,7 @@ def generate_edges
           links[index][outro_index] ||= 0
           links[index][outro_index] += 1
         end
-        votacao.fetch("Não", []).each do |outro_deputado|
-          outro_index = deputados_index[outro_deputado[2]]
-          links[index][outro_index] ||= 0
-          links[index][outro_index] -= 1
-        end
       else
-        votacao.fetch("Sim", []).each do |outro_deputado|
-          outro_index = deputados_index[outro_deputado[2]]
-          links[index][outro_index] ||= 0
-          links[index][outro_index] -= 1
-        end
         votacao.fetch("Não", []).each do |outro_deputado|
           outro_index = deputados_index[outro_deputado[2]]
           links[index][outro_index] ||= 0
