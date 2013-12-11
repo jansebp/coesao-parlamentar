@@ -1,0 +1,27 @@
+<style>
+  .background { fill: #eee; }
+  line { stroke: #fff; }
+  svg text { font: 10px sans-serif; }
+  .scale {
+    float: left;
+    text-align: center;
+  }
+</style>
+<svg ng-attr-width="{{width + margin.left + margin.right}}" ng-attr-height="{{height + margin.top + margin.bottom}}" style="margin-left: {{-margin.left}} px">
+  <g ng-attr-transform="translate({{margin.left}}, {{margin.top}})">
+    <rect class="background" ng-attr-width="{{width}}" ng-attr-height="{{height}}"></rect>
+  </g>
+</svg>
+<div class="scales">
+  <div class="scale" style="background-color: {{scale.color}}; width: {{scale.width}}%" ng-repeat="scale in scales">
+    <span ng-show="$first">
+      &#x2264; {{scale.threshold | percentual}}
+    </span>
+    <span ng-show="$middle">
+      &#x2264; {{scale.threshold | percentual}}
+    </span>
+    <span ng-show="$last">
+      &gt; {{scales[$index - 1].threshold | percentual}}
+    </span>
+  </div>
+</div>

@@ -2,14 +2,11 @@
 
 angular.module("votacoesCamaraApp")
   .directive("adjacencyMatrix", () ->
-    svg = undefined
     margin = {top: 80, right: 0, bottom: 10, left: 130}
     width = 720
     height = 720
     
     x = d3.scale.ordinal().rangeBands([0, width])
-    z = d3.scale.linear().domain([0, 4]).clamp(true)
-    c = d3.scale.category10().domain(d3.range(10))
     color = d3.scale.quantile().domain([0.5, 1])
               .range(["#225ea8", "#41b6c4", "#a1dab4",  # Blueish
                       "#ffffcc",                        # White
@@ -41,30 +38,11 @@ angular.module("votacoesCamaraApp")
         _draw(element, matrix)
 
     _draw = (element, matrix) ->
-      svg = _drawSvg(element)
+      svg = d3.select(element).select("g")
       _drawRows(svg, matrix)
       _drawColumns(svg, matrix)
 
       svg.selectAll('.row').each(_colorizeRows)
-      _drawScale(element)
-
-    _drawSvg = (element) ->
-      svgAlreadyInitialized = svg and d3.select(element).select("svg")[0][0]?
-      return svg if svgAlreadyInitialized
-
-      svgEl = d3.select(element).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .style("margin-left", "#{-margin.left} px")
-      .append("g")
-        .attr("transform", "translate(#{margin.left}, #{margin.top})")
-
-      svgEl.append("rect")
-         .attr("class", "background")
-         .attr("width", width)
-         .attr("height", height)
-
-      svgEl
 
     _drawRows = (svg, matrix) ->
       rows = _createGroups(svg, matrix, "row", (d, i) -> "translate(0, #{x(i)})")
@@ -113,29 +91,28 @@ angular.module("votacoesCamaraApp")
              .attr("dy", ".32em")
              .text((d) -> d.name)
 
-    _drawScale = (element) ->
-      scalesAlreadyCreated = d3.select(element).select(".scale")[0][0]?
-      return if scalesAlreadyCreated
-      colorsLength = color.range().length
-      scaleWidth = 100 / colorsLength
-      scales = d3.select(element).append("div")
-      scales.selectAll("div").data(color.range(), String).enter().append("div")
-        .attr("class", "scale")
-        .style("width", "#{scaleWidth}%")
-        .style("background-color", (d) -> d)
-        .text(_scaleLevelsText(color.domain(), colorsLength))
-
-    _scaleLevelsText = (domain, length) ->
-      minimum = domain[0] * 100
-      maximum = domain[1] * 100
-      step = (maximum - minimum)/length
-      (d, i) ->
-        "#{Math.round(minimum + i*step)}% - #{Math.round(minimum + (i+1)*step)}%"
+    _buildScales = ->
+      colors = color.range()
+      domain = color.domain()
+      min = domain[0]
+      max = domain[1]
+      length = colors.length
+      step = (max - min) / length
+      scaleWidth = 100 / length
+      for c, i in colors
+        color: c
+        threshold: min + i*step
+        width: scaleWidth
 
     restrict: "E"
+    templateUrl: "views/directives/adjacencyMatrix.html"
     scope:
       filepath: "="
     link: (scope, element, attrs) ->
+      scope.width = width
+      scope.height = height
+      scope.margin = margin
+      scope.scales = _buildScales()
       scope.$watch 'filepath', (filepath) ->
         render(element[0], filepath)
   )
