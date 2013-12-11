@@ -12,28 +12,27 @@ angular.module("votacoesCamaraApp")
                       "#ffffcc",                        # White
                       "#fed98e", "#fe9929", "#cc4c02"]) # Redish
 
-    render = (element, filepath) ->
-      d3.json filepath, (data) ->
-        matrix = []
-        nodes = data.nodes
-        n = nodes.length
+    render = (element, graph) ->
+      matrix = []
+      nodes = graph.nodes
+      n = nodes.length
 
-        nodes.forEach (node, i) ->
-          node.index = i
-          node.count = 0
-          matrix[i] = d3.range(n).map (j) -> { x: j, y: i, z: 0 }
+      nodes.forEach (node, i) ->
+        node.index = i
+        node.count = 0
+        matrix[i] = d3.range(n).map (j) -> { x: j, y: i, z: 0 }
 
-        data.links.forEach (link) ->
-          matrix[link.source][link.target].z += link.value
-          matrix[link.source].name = nodes[link.source].name
-          nodes[link.source].count += link.value
-          nodes[link.target].count += link.value
+      graph.links.forEach (link) ->
+        matrix[link.source][link.target].z += link.value
+        matrix[link.source].name = nodes[link.source].name
+        nodes[link.source].count += link.value
+        nodes[link.target].count += link.value
 
-        orders =
-          count: d3.range(n).sort (a, b) -> nodes[b].count - nodes[a].count
-        x.domain(orders.count)
+      orders =
+        count: d3.range(n).sort (a, b) -> nodes[b].count - nodes[a].count
+      x.domain(orders.count)
 
-        _draw(element, matrix)
+      _draw(element, matrix)
 
     _draw = (element, matrix) ->
       svg = d3.select(element).select("g")
@@ -105,12 +104,12 @@ angular.module("votacoesCamaraApp")
     restrict: "E"
     templateUrl: "views/directives/adjacencyMatrix.html"
     scope:
-      filepath: "="
+      graph: "="
     link: (scope, element, attrs) ->
       scope.width = width
       scope.height = height
       scope.margin = margin
       scope.scales = _buildScales()
-      scope.$watch 'filepath', (filepath) ->
-        render(element[0], filepath)
+      scope.$watch 'graph', (graph) ->
+        render(element[0], graph) if graph
   )
