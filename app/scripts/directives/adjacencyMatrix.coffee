@@ -10,7 +10,7 @@ angular.module("votacoesCamaraApp")
     x = d3.scale.ordinal().rangeBands([0, width])
     z = d3.scale.linear().domain([0, 4]).clamp(true)
     c = d3.scale.category10().domain(d3.range(10))
-    color = d3.scale.quantile().domain([0.8, 1])
+    color = d3.scale.quantile().domain([0.5, 1])
               .range(["#225ea8", "#41b6c4", "#a1dab4",  # Blueish
                       "#ffffcc",                        # White
                       "#fed98e", "#fe9929", "#cc4c02"]) # Redish
@@ -46,6 +46,7 @@ angular.module("votacoesCamaraApp")
       _drawColumns(svg, matrix)
 
       svg.selectAll('.row').each(_colorizeRows)
+      _drawScale(element)
 
     _drawSvg = (element) ->
       svgAlreadyInitialized = svg and d3.select(element).select("svg")[0][0]?
@@ -111,6 +112,25 @@ angular.module("votacoesCamaraApp")
              .attr("y", x.rangeBand() / 2)
              .attr("dy", ".32em")
              .text((d) -> d.name)
+
+    _drawScale = (element) ->
+      scalesAlreadyCreated = d3.select(element).select(".scale")[0][0]?
+      return if scalesAlreadyCreated
+      colorsLength = color.range().length
+      scaleWidth = 100 / colorsLength
+      scales = d3.select(element).append("div")
+      scales.selectAll("div").data(color.range(), String).enter().append("div")
+        .attr("class", "scale")
+        .style("width", "#{scaleWidth}%")
+        .style("background-color", (d) -> d)
+        .text(_scaleLevelsText(color.domain(), colorsLength))
+
+    _scaleLevelsText = (domain, length) ->
+      minimum = domain[0] * 100
+      maximum = domain[1] * 100
+      step = (maximum - minimum)/length
+      (d, i) ->
+        "#{Math.round(minimum + i*step)}% - #{Math.round(minimum + (i+1)*step)}%"
 
     restrict: "E"
     scope:
