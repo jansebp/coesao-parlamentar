@@ -9,8 +9,14 @@
     <adjacency-matrix data-graph="graph"></adjacency-matrix>
   </div>
   <div class="col-md-3">
+    <h2>Ano</h2>
     <select ng-model="year" ng-options="year for year in party.years"></select>
-    <p>{{graph.nodes.length}} deputados</p>
+
+    <h2>Estatísticas</h2>
+    <p><strong>{{graph.nodes.length}}</strong> deputados</p>
+    <p><strong>{{graph.stats.voting_sessions}}</strong> votações</p>
+
+    <h2>Histograma</h2>
     <histogram data-graph="graph"></histogram>
   </div>
 </div>
