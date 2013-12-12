@@ -2,7 +2,7 @@
 
 angular.module("votacoesCamaraApp")
   .directive("adjacencyMatrix", () ->
-    margin = {top: 80, right: 0, bottom: 10, left: 130}
+    margin = {top: 10, right: 0, bottom: 10, left: 130}
     width = 720
     height = 720
     
@@ -14,6 +14,19 @@ angular.module("votacoesCamaraApp")
               .range(["#225ea8", "#41b6c4", "#a1dab4",  # Blueish
                       "#ffffcc",                        # White
                       "#fed98e", "#fe9929", "#cc4c02"]) # Redish
+
+    buildScales = ->
+      colors = color.range()
+      domain = color.domain()
+      min = domain[0]
+      max = domain[1]
+      length = colors.length
+      step = (max - min) / length
+      scaleWidth = 100 / length
+      for c, i in colors
+        color: c
+        threshold: min + i*step
+        width: scaleWidth
 
     render = (element, graph) ->
       matrix = []
@@ -39,8 +52,10 @@ angular.module("votacoesCamaraApp")
 
     _draw = (element, matrix) ->
       svg = d3.select(element).select("g")
-      _drawRows(svg, matrix)
+      rows = _drawRows(svg, matrix)
       _drawColumns(svg, matrix)
+
+      _drawLabels(rows)
 
       svg.selectAll('.row').each(_colorizeRows)
 
@@ -50,10 +65,6 @@ angular.module("votacoesCamaraApp")
       rows = _createGroups(svg, matrix, "row", transform, exitTransform)
       rows.attr("transform", "translate(0, #{-transitionStartingPoint})")
 
-      _drawLabels(rows)
-         .attr("x", -6)
-         .attr("text-anchor", "end")
-
       rows
 
     _drawColumns = (svg, matrix) ->
@@ -62,11 +73,15 @@ angular.module("votacoesCamaraApp")
       columns = _createGroups(svg, matrix, "column", transform, exitTransform)
       columns.attr("transform", "translate(#{-transitionStartingPoint})rotate(-90)")
 
-      _drawLabels(columns)
-         .attr("x", 6)
-         .attr("text-anchor", "start")
-
       columns
+
+    _drawLabels = (element) ->
+      element.append("text")
+             .attr("y", x.rangeBand() / 2)
+             .attr("dy", ".32em")
+             .text((d) -> d.name)
+             .attr("x", -6)
+             .attr("text-anchor", "end")
 
     _colorizeRows = (rows) ->
       cells = d3.select(this).selectAll(".cell")
@@ -75,10 +90,12 @@ angular.module("votacoesCamaraApp")
       cells.enter().append("rect")
         .attr("class", "cell")
 
-      cells.attr("x", (d) -> x(d.x) )
+      cells.attr("x", (d) -> x(d.x))
         .attr("width", x.rangeBand())
         .attr("height", x.rangeBand())
         .style("fill", (d) -> color(d.z))
+        .on("mouseover", _mouseover)
+        .on("mouseout", _mouseout)
 
       cells.exit().remove()
 
@@ -91,24 +108,13 @@ angular.module("votacoesCamaraApp")
       groups.exit().transition().duration(transitionDuration).attr("transform", exitTransform).remove()
       g
 
-    _drawLabels = (element) ->
-      element.append("text")
-             .attr("y", x.rangeBand() / 2)
-             .attr("dy", ".32em")
-             .text((d) -> d.name)
+    _mouseover = (p) ->
+      d3.selectAll("svg .row").classed("active", (d) ->
+        d[0].y == p.y or d[0].y == p.x
+      )
 
-    _buildScales = ->
-      colors = color.range()
-      domain = color.domain()
-      min = domain[0]
-      max = domain[1]
-      length = colors.length
-      step = (max - min) / length
-      scaleWidth = 100 / length
-      for c, i in colors
-        color: c
-        threshold: min + i*step
-        width: scaleWidth
+    _mouseout = (p) ->
+      d3.selectAll("svg .row").classed("active", false)
 
     restrict: "E"
     templateUrl: "views/directives/adjacencyMatrix.html"
@@ -118,7 +124,7 @@ angular.module("votacoesCamaraApp")
       scope.width = width
       scope.height = height
       scope.margin = margin
-      scope.scales = _buildScales()
+      scope.scales = buildScales()
       scope.$watch 'graph', (graph) ->
         render(element[0], graph) if graph
   )
