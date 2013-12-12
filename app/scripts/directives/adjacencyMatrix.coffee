@@ -2,6 +2,7 @@
 
 angular.module("votacoesCamaraApp")
   .directive("adjacencyMatrix", () ->
+    svg = undefined
     margin = {top: 10, right: 0, bottom: 10, left: 130}
     width = 720
     height = 720
@@ -52,25 +53,25 @@ angular.module("votacoesCamaraApp")
 
     _draw = (element, matrix) ->
       svg = d3.select(element).select("g")
-      rows = _drawRows(svg, matrix)
-      _drawColumns(svg, matrix)
+      rows = _drawRows(matrix)
+      _drawColumns(matrix)
 
       _drawLabels(rows)
 
       svg.selectAll('.row').each(_colorizeRows)
 
-    _drawRows = (svg, matrix) ->
+    _drawRows = (matrix) ->
       transform = (d, i) -> "translate(0, #{x(i)})"
       exitTransform = (d, i) -> "translate(0, #{transitionStartingPoint})"
-      rows = _createGroups(svg, matrix, "row", transform, exitTransform)
+      rows = _createGroups(matrix, "row", transform, exitTransform)
       rows.attr("transform", "translate(0, #{-transitionStartingPoint})")
 
       rows
 
-    _drawColumns = (svg, matrix) ->
+    _drawColumns = (matrix) ->
       transform = (d, i) -> "translate(#{x(i)})rotate(-90)"
       exitTransform = (d, i) -> "translate(#{transitionStartingPoint})rotate(-90)"
-      columns = _createGroups(svg, matrix, "column", transform, exitTransform)
+      columns = _createGroups(matrix, "column", transform, exitTransform)
       columns.attr("transform", "translate(#{-transitionStartingPoint})rotate(-90)")
 
       columns
@@ -99,7 +100,7 @@ angular.module("votacoesCamaraApp")
 
       cells.exit().remove()
 
-    _createGroups = (svg, matrix, className, transform, exitTransform) ->
+    _createGroups = (matrix, className, transform, exitTransform) ->
       groups = svg.selectAll(".#{className}")
          .data(matrix, (d, i) -> d.name)
       g = groups.enter().append("g")
@@ -109,12 +110,11 @@ angular.module("votacoesCamaraApp")
       g
 
     _mouseover = (p) ->
-      d3.selectAll("svg .row").classed("active", (d) ->
+      svg.selectAll(".row").classed "active", (d) ->
         d[0].y == p.y or d[0].y == p.x
-      )
 
     _mouseout = (p) ->
-      d3.selectAll("svg .row").classed("active", false)
+      svg.selectAll(".row.active").classed("active", false)
 
     restrict: "E"
     templateUrl: "views/directives/adjacencyMatrix.html"
