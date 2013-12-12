@@ -7,7 +7,7 @@ angular.module("votacoesCamaraApp")
     scope:
       graph: "="
     link: (scope, element, attrs) ->
-      scope.tickFormat = $filter("percentual")
+      scope.tickFormat = $filter("roundedPercentual")
       scope.$watch "graph", (graph) ->
         return unless graph
         values = (link.value for link in graph.links)

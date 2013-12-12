@@ -21,13 +21,17 @@ angular.module("votacoesCamaraApp")
       domain = color.domain()
       min = domain[0]
       max = domain[1]
-      length = colors.length
-      step = (max - min) / length
-      scaleWidth = 100 / length
+      step = (max - min) / (colors.length - 1)
       for c, i in colors
+        threshold = min + i * step
+        previous = if i > 0
+                     min + (i - 1) * step
+                   else
+                     0
+
         color: c
-        threshold: min + i*step
-        width: scaleWidth
+        threshold: threshold
+        width: "#{(threshold - previous) * 100}%"
 
     render = (element, graph) ->
       matrix = []

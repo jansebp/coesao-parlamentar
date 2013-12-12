@@ -5,7 +5,14 @@
   svg .row.active { fill-opacity: 1; }
   .scale {
     float: left;
-    text-align: center;
+  }
+  .scale .first-tick {
+    float: left !important;
+    margin-left: -5px;
+  }
+  .scale .tick {
+    float: right;
+    margin-right: -20px;
   }
 </style>
 <svg ng-attr-width="{{width + margin.left + margin.right}}" ng-attr-height="{{height + margin.top + margin.bottom}}" style="margin-left: {{-margin.left}} px">
@@ -14,15 +21,13 @@
   </g>
 </svg>
 <div class="scales">
-  <div class="scale" style="background-color: {{scale.color}}; width: {{scale.width}}%" ng-repeat="scale in scales">
-    <span ng-show="$first">
-      &#x2264; {{scale.threshold | roundedPercentual}}
+  <div class="scale" style="width: {{scale.width}}" ng-repeat="scale in scales">
+    <div style="height: 10px; background-color: {{scale.color}}; width: 100%"></div>
+    <span class="tick first-tick" ng-show="$first">
+      0%
     </span>
-    <span ng-show="$middle">
-      &#x2264; {{scale.threshold | roundedPercentual}}
-    </span>
-    <span ng-show="$last">
-      &gt; {{scales[$index - 1].threshold | roundedPercentual}}
+    <span class="tick">
+      {{scale.threshold | roundedPercentual}}
     </span>
   </div>
 </div>
