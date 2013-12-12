@@ -32,7 +32,8 @@
     "connect-livereload": "~0.2.0",
     "grunt-google-cdn": "~0.2.0",
     "grunt-ngmin": "~0.0.2",
-    "time-grunt": "~0.1.0"
+    "time-grunt": "~0.1.0",
+    "grunt-shell": "~0.6.1"
   },
   "engines": {
     "node": "0.10.x",

@@ -28,6 +28,15 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
+    shell: {
+      buildData: {
+        options: {
+          stdout: true
+        },
+        command: 'cd data; ruby adjacency-matrix.rb'
+      }
+    },
+
     watch: {
       coffee: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -387,5 +396,9 @@ module.exports = function (grunt) {
     'jshint',
     'test',
     'build'
+  ]);
+  
+  grunt.registerTask('data', [
+    'shell:buildData'
   ]);
 };
