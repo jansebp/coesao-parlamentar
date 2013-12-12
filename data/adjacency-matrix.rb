@@ -4,17 +4,15 @@ require "./db"
 
 YEAR = '2003'
 FILEPATH = "matrix.json"
+PARTIDO = "PT"
 
-def generate_nodes
-end
-
-def generate_edges
+def generate_json
   db = DB.open
   deputados = []
   deputados_index = {}
   links = {}
   votos = db.execute <<-eos
-    SELECT * FROM votos WHERE partido='PT' AND voto IN ("Sim", "Não") AND
+    SELECT * FROM votos WHERE partido='#{PARTIDO}' AND voto IN ("Sim", "Não") AND
       votacao_id IN
       (SELECT id FROM votacoes WHERE
        data > date("#{YEAR}-01-01") AND data < date("#{YEAR}-12-31"));
@@ -69,11 +67,14 @@ def generate_edges
       formatted_links << { 'source' => source, 'target' => target, 'value' => (value/votacoes_em_conjunto.to_f).round(3) }
     end
   end
-  { 'links' => formatted_links, 'nodes' => deputados }
+
+  stats = { 'voting_sessions' => votacoes.size }
+
+  { 'links' => formatted_links, 'nodes' => deputados, 'stats' => stats }
 end
 
-edges = generate_edges
+json = generate_json
 
 File.open(FILEPATH, 'w+') do |file|
-  file.write JSON.dump(edges)
+  file.write JSON.dump(json)
 end
