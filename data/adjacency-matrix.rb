@@ -1,22 +1,33 @@
+require "pry"
 require "csv"
 require "json"
 require "./db"
 
-YEAR = '2003'
-FILEPATH = "matrix.json"
-PARTIDO = "PT"
+YEARS = (2000..2008)
+PARTIES = %w(PT PMDB PSOL)
 
-def generate_json
+FILEPATH = "../app/data/PARTY-YEAR.json"
+
+def generate_json(party, year)
   db = DB.open
+
   deputados = []
   deputados_index = {}
   links = {}
+
   votos = db.execute <<-eos
-    SELECT * FROM votos WHERE partido='#{PARTIDO}' AND voto IN ("Sim", "Não") AND
+    SELECT * FROM votos WHERE partido='#{party}' AND voto IN ("Sim", "Não") AND
       votacao_id IN
       (SELECT id FROM votacoes WHERE
-       data > date("#{YEAR}-01-01") AND data < date("#{YEAR}-12-31"));
+       data > date("#{year}-01-01") AND data < date("#{year}-12-31"));
   eos
+
+  if votos.empty?
+    puts "[Matrix] Empty matrix for #{party} in #{year}. No file created."
+    return
+  else
+    puts "[Matrix] Generating matrix for #{party} in #{year}"
+  end
 
   votacoes_deputados = votos.group_by { |voto| voto[2] } # nome
   votacoes = votos.group_by { |voto| voto[1] } # votacao_id
@@ -64,17 +75,27 @@ def generate_json
       votacoes1 = votos_deputado1.map { |x| x[1] }
       votacoes2 = votos_deputado2.map { |x| x[1] }
       votacoes_em_conjunto = (votacoes1 & votacoes2).length
-      formatted_links << { 'source' => source, 'target' => target, 'value' => (value/votacoes_em_conjunto.to_f).round(3) }
+
+      v = (value/votacoes_em_conjunto.to_f).round(3)
+
+      formatted_links << { 'source' => source, 'target' => target, 'value' => v }
     end
   end
 
   stats = { 'voting_sessions' => votacoes.size }
 
-  { 'links' => formatted_links, 'nodes' => deputados, 'stats' => stats }
+  json = { 'links' => formatted_links, 'nodes' => deputados, 'stats' => stats }
+  
+  filepath = FILEPATH.gsub("PARTY", party.downcase).gsub("YEAR", year.to_s)
+
+  File.open(filepath, 'w+') do |file|
+    file.write JSON.dump(json)
+  end
 end
 
-json = generate_json
 
-File.open(FILEPATH, 'w+') do |file|
-  file.write JSON.dump(json)
+PARTIES.each do |p|
+  YEARS.each do |y|
+    generate_json(p, y)
+  end
 end
