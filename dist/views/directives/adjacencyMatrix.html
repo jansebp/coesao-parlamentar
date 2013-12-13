@@ -15,6 +15,14 @@
     margin-right: -20px;
   }
 </style>
+<div>
+  Ordenação:
+  <select ng-model="order">
+    <option value="count">count</option>
+    <option value="party">party</option>
+  </select>
+</div>
+
 <svg ng-attr-width="{{width + margin.left + margin.right}}" ng-attr-height="{{height + margin.top + margin.bottom}}" style="margin-left: {{-margin.left}} px">
   <g ng-attr-transform="translate({{margin.left}}, {{margin.top}})">
     <rect class="background" ng-attr-width="{{width}}" ng-attr-height="{{height}}"></rect>

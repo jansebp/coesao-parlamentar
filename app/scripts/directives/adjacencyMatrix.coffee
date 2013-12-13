@@ -33,11 +33,14 @@ angular.module("votacoesCamaraApp")
         threshold: threshold
         width: "#{(threshold - previous) * 100}%"
 
-    render = (element, graph) ->
+    reorder = undefined
+
+    render = (element, graph, order) ->
       matrix = []
       nodes = graph.nodes
       n = nodes.length
 
+      console.log(nodes)
       nodes.forEach (node, i) ->
         node.index = i
         node.count = 0
@@ -46,14 +49,19 @@ angular.module("votacoesCamaraApp")
       graph.links.forEach (link) ->
         matrix[link.source][link.target].z += link.value
         matrix[link.source].name = nodes[link.source].name
+        matrix[link.source].partido = nodes[link.source].partido
         nodes[link.source].count += link.value
         nodes[link.target].count += link.value
 
       orders =
+        party: d3.range(n).sort (a, b) -> if (nodes[a].partido == nodes[b].partido) then [b].count - nodes[a].count else nodes[a].partido.localeCompare(nodes[b].partido)
         count: d3.range(n).sort (a, b) -> nodes[b].count - nodes[a].count
-      x.domain(orders.count)
 
-      _draw(element, matrix)
+      reorder = (order) ->
+        x.domain(orders[order])
+        _draw(element, matrix)
+
+      reorder(order)
 
     _draw = (element, matrix) ->
       svg = d3.select(element).select("g")
@@ -84,7 +92,7 @@ angular.module("votacoesCamaraApp")
       element.append("text")
              .attr("y", x.rangeBand() / 2)
              .attr("dy", ".32em")
-             .text((d) -> d.name)
+             .text((d) -> "#{d.name} (#{d.partido})")
              .attr("x", -6)
              .attr("text-anchor", "end")
 
@@ -106,7 +114,9 @@ angular.module("votacoesCamaraApp")
 
     _createGroups = (matrix, className, transform, exitTransform) ->
       groups = svg.selectAll(".#{className}")
-         .data(matrix, (d, i) -> d.name)
+         .data(matrix, (d, i) -> "#{d.name}#{d.partido}") # FIXME: Adicionando o partido na chave faz com que, ao mudar de ano,
+                                                          # parlamentares que trocaram de partido sumam e apareçam com outra linha.
+                                                          # Seria massa ele só mudar o texto
       g = groups.enter().append("g")
          .attr("class", className)
       groups.transition().duration(transitionDuration).attr("transform", transform)
@@ -129,6 +139,9 @@ angular.module("votacoesCamaraApp")
       scope.height = height
       scope.margin = margin
       scope.scales = buildScales()
+      scope.order = 'count'
+      scope.$watch 'order', (order) ->
+        reorder(order) if order
       scope.$watch 'graph', (graph) ->
-        render(element[0], graph) if graph
+        render(element[0], graph, scope.order) if graph
   )
