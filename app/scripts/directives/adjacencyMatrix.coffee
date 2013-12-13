@@ -37,6 +37,8 @@ angular.module("votacoesCamaraApp")
 
     render = (element, graph, order) ->
       matrix = []
+      parties_count = []
+      parties_members = []
       nodes = graph.nodes
       n = nodes.length
 
@@ -45,6 +47,9 @@ angular.module("votacoesCamaraApp")
         node.index = i
         node.count = 0
         matrix[i] = d3.range(n).map (j) -> { x: j, y: i, z: 0 }
+        parties_count[node.partido] ||= 0
+        parties_members[node.partido] ||= 0
+        parties_members[node.partido] += 1
 
       graph.links.forEach (link) ->
         matrix[link.source][link.target].z += link.value
@@ -52,9 +57,16 @@ angular.module("votacoesCamaraApp")
         matrix[link.source].partido = nodes[link.source].partido
         nodes[link.source].count += link.value
         nodes[link.target].count += link.value
+        
+        parties_count[nodes[link.source].partido] += link.value / parties_members[nodes[link.source].partido]
+        parties_count[nodes[link.target].partido] += link.value / parties_members[nodes[link.target].partido]
 
       orders =
-        party: d3.range(n).sort (a, b) -> if (nodes[a].partido == nodes[b].partido) then [b].count - nodes[a].count else nodes[a].partido.localeCompare(nodes[b].partido)
+        party: d3.range(n).sort (a, b) ->
+          if (nodes[a].partido == nodes[b].partido)
+            nodes[b].count - nodes[a].count
+          else
+            parties_count[nodes[b].partido] - parties_count[nodes[a].partido]
         count: d3.range(n).sort (a, b) -> nodes[b].count - nodes[a].count
 
       reorder = (order) ->
