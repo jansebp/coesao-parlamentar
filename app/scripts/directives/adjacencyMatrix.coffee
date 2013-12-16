@@ -42,7 +42,6 @@ angular.module("votacoesCamaraApp")
       nodes = graph.nodes
       n = nodes.length
 
-      console.log(nodes)
       nodes.forEach (node, i) ->
         node.index = i
         node.count = 0
@@ -78,7 +77,6 @@ angular.module("votacoesCamaraApp")
     _draw = (element, matrix) ->
       svg = d3.select(element).select("g")
       rows = _drawRows(matrix)
-      _drawColumns(matrix)
 
       _drawLabels(rows)
 
@@ -91,14 +89,6 @@ angular.module("votacoesCamaraApp")
       rows.attr("transform", "translate(0, #{-transitionStartingPoint})")
 
       rows
-
-    _drawColumns = (matrix) ->
-      transform = (d, i) -> "translate(#{x(i)})rotate(-90)"
-      exitTransform = (d, i) -> "translate(#{transitionStartingPoint})rotate(-90)"
-      columns = _createGroups(matrix, "column", transform, exitTransform)
-      columns.attr("transform", "translate(#{-transitionStartingPoint})rotate(-90)")
-
-      columns
 
     _drawLabels = (element) ->
       element.append("text")
