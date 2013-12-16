@@ -143,7 +143,7 @@ angular.module("votacoesCamaraApp")
       scope.scales = buildScales()
       scope.order = 'count'
       scope.$watch 'order', (order) ->
-        reorder(order) if order
+        reorder(order) if order and reorder
       scope.$watch 'graph', (graph) ->
         render(element[0], graph, scope.order) if graph
   )
