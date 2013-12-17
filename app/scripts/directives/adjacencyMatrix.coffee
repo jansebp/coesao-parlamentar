@@ -6,6 +6,7 @@ angular.module("votacoesCamaraApp")
     margin = {top: 10, right: 0, bottom: 10, left: 130}
     width = 720
     height = 720
+    _scope = undefined
     
     transitionDuration = 2000
     transitionStartingPoint = height * 1.1
@@ -127,20 +128,35 @@ angular.module("votacoesCamaraApp")
 
     _mouseover = (p) ->
       svg.selectAll(".row").classed "active", (d) ->
-        d[0].y == p.y or d[0].y == p.x
+        if d[0].y == p.y
+          _scope.$apply ->
+            _scope.activeCell.rowName = d.name
+            _scope.activeCell.rowPartido = d.partido
+            _scope.activeCell.value = p.z
+          true
+        else if d[0].y == p.x
+          _scope.$apply ->
+            _scope.activeCell.colName = d.name
+            _scope.activeCell.colPartido = d.partido
+          true
 
     _mouseout = (p) ->
       svg.selectAll(".row.active").classed("active", false)
+      _scope.$apply ->
+        _scope.activeCell = {}
 
     restrict: "E"
     templateUrl: "views/directives/adjacencyMatrix.html"
     scope:
       graph: "="
+      activeCell: "="
     link: (scope, element, attrs) ->
+      _scope = scope
       scope.width = width
       scope.height = height
       scope.margin = margin
       scope.scales = buildScales()
+      scope.activeCell = {}
       scope.order = 'count'
       scope.$watch 'order', (order) ->
         reorder(order) if order and reorder
