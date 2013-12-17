@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-md-9">
     <h2>Matriz de similaridade</h2>
-    <adjacency-matrix data-graph="graph"></adjacency-matrix>
+    <adjacency-matrix data-graph="graph" active-cell="activeCell"></adjacency-matrix>
   </div>
   <div class="col-md-3">
     <h2>Ano</h2>
@@ -17,6 +17,11 @@
     <p><strong>{{graph.nodes.length}}</strong> deputados</p>
     <p><strong>{{graph.stats.filtered_voting_sessions}}</strong> votações 
     (de <strong>{{graph.stats.total_voting_sessions}}</strong>)</p>
+    <p ng-show="activeCell.colName">
+      {{activeCell.rowName}} ({{activeCell.rowPartido}}) votou igual a
+      {{activeCell.colName}} ({{activeCell.colPartido}})
+      {{activeCell.value | roundedPercentual}} das vezes
+    </p>
 
     <h2>Histograma</h2>
     <histogram data-graph="graph"></histogram>
