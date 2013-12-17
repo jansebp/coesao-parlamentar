@@ -1,5 +1,5 @@
 <style>
-  .background { fill: #eee; }
+  .background { fill: url(#stripPattern); }
   text { font: 10px sans-serif; }
   svg:hover { fill-opacity: 0.3; }
   svg .row.active { fill-opacity: 1; }
@@ -24,6 +24,13 @@
 </div>
 
 <svg ng-attr-width="{{width + margin.left + margin.right}}" ng-attr-height="{{height + margin.top + margin.bottom}}" style="margin-left: {{-margin.left}} px">
+
+  <defs>
+    <pattern id="stripPattern" patternunits="userSpaceOnUse" x="0" y="0" width="4" height="4" viewbox="0 0 8 8">    
+      <rect x="0" y="0" width="16" height="1" fill="gray" transform="rotate(45)"></rect>  
+    </pattern>
+  </defs>
+
   <g ng-attr-transform="translate({{margin.left}}, {{margin.top}})">
     <rect class="background" ng-attr-width="{{width}}" ng-attr-height="{{height}}"></rect>
   </g>
