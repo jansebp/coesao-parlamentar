@@ -6,10 +6,6 @@
   .scale {
     float: left;
   }
-  .scale .first-tick {
-    float: left !important;
-    margin-left: -5px;
-  }
   .scale .tick {
     float: right;
     margin-right: -20px;
@@ -45,9 +41,6 @@
 <div class="scales">
   <div class="scale" style="width: {{scale.width}}" ng-repeat="scale in scales">
     <div style="height: 10px; background-color: {{scale.color}}; width: 100%"></div>
-    <span class="tick first-tick" ng-show="$first">
-      0%
-    </span>
     <span class="tick">
       {{scale.threshold | roundedPercentual}}
     </span>

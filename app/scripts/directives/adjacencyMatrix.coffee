@@ -12,27 +12,23 @@ angular.module("votacoesCamaraApp")
     transitionStartingPoint = height * 1.1
 
     x = d3.scale.ordinal().rangeBands([0, width])
-    color = d3.scale.quantile().domain([0.5, 1])
+    color = d3.scale.quantile().domain([0.4, 1])
               .range(["#225ea8", "#41b6c4", "#a1dab4",  # Blueish
                       "#ffffcc",                        # White
                       "#fed98e", "#fe9929", "#cc4c02"]) # Redish
 
     buildScales = ->
-      colors = color.range()
-      domain = color.domain()
-      min = domain[0]
-      max = domain[1]
-      step = (max - min) / (colors.length - 1)
-      for c, i in colors
-        threshold = min + i * step
+      quantiles = color.quantiles().slice()
+      quantiles.unshift(0)
+      quantiles.push(1)
+      for quantile, i in quantiles
         previous = if i > 0
-                     min + (i - 1) * step
+                     quantiles[i - 1]
                    else
                      0
-
-        color: c
-        threshold: threshold
-        width: "#{(threshold - previous) * 100}%"
+        color: color(quantile - 0.0001)
+        threshold: quantile
+        width: "#{(quantile - previous) * 100}%"
 
     reorder = undefined
 
