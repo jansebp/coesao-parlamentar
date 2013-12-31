@@ -26,7 +26,7 @@ angular.module("votacoesCamaraApp")
                      quantiles[i - 1]
                    else
                      0
-        color: color(quantile - 0.0001)
+        color: color(previous)
         threshold: quantile
         width: "#{(quantile - previous) * 100}%"
 
