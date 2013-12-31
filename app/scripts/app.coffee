@@ -9,6 +9,9 @@ angular.module("votacoesCamaraApp", ["ui.router", "ngRoute", "nvd3ChartDirective
         url: "/"
         templateUrl: "views/main.html"
         controller: "MainCtrl"
+      .state "about",
+        url: "/sobre"
+        templateUrl: "views/about.html"
       .state "party",
         url: "/:party_id"
         templateUrl: "views/party.html"

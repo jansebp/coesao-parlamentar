@@ -3,17 +3,30 @@
     <div class="navbar-header">
       <a href="#" class="navbar-brand">{{title}}</a>
     </div>
-    <div class="nav navbar-nav">
-      <li class="dropdown">
-        <a role="button" class="dropdown-toggle" data-toggle="dropdown" id="parties-dropdown">
-          Partidos <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="parties-dropdown">
-          <li ui-sref-active="disabled" ng-repeat="party in parties">
-            <a ui-sref="party({party_id: '{{party.id}}'})">{{party.label}}</a>
-          </li>
-        </ul>
-      </li>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active">
+          <a ui-sref="about">Sobre</a>
+        </li>
+        <li class="dropdown">
+          <a role="button" class="dropdown-toggle" data-toggle="dropdown" id="parties-dropdown">
+            Partidos <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="parties-dropdown">
+            <li ui-sref-active="disabled" ng-repeat="party in parties">
+              <a ui-sref="party({party_id: '{{party.id}}'})">{{party.label}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="http://github.com/vitorbaptista/votacoes-camara" target="_blank">Código-Fonte</a>
+        </li>
+        <li>
+          <a href="mailto:vitor@vitorbaptista.com">Contato</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
