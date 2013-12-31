@@ -4,11 +4,9 @@
       <a href="#" class="navbar-brand">{{title}}</a>
     </div>
     <div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav parties">
-      <li ng-repeat="party in parties">
-        <a href="{{routeFor(party)}}">{{party.label}}</a>
-      </li>
-    </ul>
+      <select class="party-select form-control pull-right" ng-model="party" ng-options="v.label for (k, v) in parties">
+        <option value="">-- Escolha um partido --</option>
+      </select>
     </div>
   </div>
 </nav>

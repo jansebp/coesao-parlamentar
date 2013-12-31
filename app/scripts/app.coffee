@@ -1,13 +1,15 @@
-'use strict'
+"use strict"
 
-angular.module('votacoesCamaraApp', ['ngRoute', 'nvd3ChartDirectives'])
-  .config ($routeProvider) ->
-    $routeProvider
-      .when '/',
-        templateUrl: 'views/main.html'
-        controller: 'MainCtrl'
-      .when '/:party_id/:year',
-        templateUrl: 'views/party.html'
-        controller: 'PartyCtrl'
-      .otherwise
-        redirectTo: '/'
+angular.module("votacoesCamaraApp", ["ui.router", "ngRoute", "nvd3ChartDirectives"])
+  .config ($stateProvider, $urlRouterProvider) ->
+    $urlRouterProvider.otherwise("/")
+
+    $stateProvider
+      .state "main",
+        url: "/"
+        templateUrl: "views/main.html"
+        controller: "MainCtrl"
+      .state "party",
+        url: "/:party_id"
+        templateUrl: "views/party.html"
+        controller: "PartyCtrl"
