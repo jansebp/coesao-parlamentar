@@ -141,6 +141,15 @@ angular.module("votacoesCamaraApp")
       _scope.$apply ->
         _scope.activeCell = {}
 
+    _setupSizesAndXScale = (scope, element) ->
+      width = element.width() || width
+      height = element.height() || height
+      transitionStartingPoint = width * 1.1
+      widthWithoutMargins = width - margin.left - margin.right
+      scope.width = width
+      scope.height = widthWithoutMargins + margin.bottom
+      x.rangeBands([0, widthWithoutMargins])
+
     restrict: "E"
     templateUrl: "views/directives/adjacencyMatrix.html"
     scope:
@@ -148,8 +157,7 @@ angular.module("votacoesCamaraApp")
       activeCell: "="
     link: (scope, element, attrs) ->
       _scope = scope
-      scope.width = width
-      scope.height = height
+      _setupSizesAndXScale(scope, element)
       scope.margin = margin
       scope.scales = buildScales()
       scope.activeCell = {}

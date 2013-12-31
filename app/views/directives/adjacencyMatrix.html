@@ -3,6 +3,9 @@
   text { font: 10px sans-serif; }
   svg:hover { fill-opacity: 0.3; }
   svg .row.active { fill-opacity: 1; }
+  .scales {
+    margin-top: 10px;
+  }
   .scale {
     float: left;
   }
@@ -24,9 +27,7 @@
 </div>
 
 <svg
-  ng-attr-width="{{width + margin.left + margin.right}}"
-  ng-attr-height="{{height + margin.top + margin.bottom}}"
-  style="margin-left: {{-margin.left}} px">
+  style="width: {{width}}px; height: {{height}}px;">
 
   <defs>
     <pattern id="stripPattern" patternUnits="userSpaceOnUse" x="0" y="0" width="4" height="4" viewBox="0 0 8 8">    
@@ -35,7 +36,7 @@
   </defs>
 
   <g ng-attr-transform="translate({{margin.left}}, {{margin.top}})">
-    <rect class="background" ng-attr-width="{{width}}" ng-attr-height="{{height}}"></rect>
+    <rect class="background" ng-attr-width="{{width}}px" ng-attr-height="{{height}}px"></rect>
   </g>
 </svg>
 <div class="scales">
