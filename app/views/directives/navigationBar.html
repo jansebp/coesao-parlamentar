@@ -1,0 +1,14 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">{{title}}</a>
+    </div>
+    <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav parties">
+      <li ng-repeat="party in parties">
+        <a href="{{routeFor(party)}}">{{party.label}}</a>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>

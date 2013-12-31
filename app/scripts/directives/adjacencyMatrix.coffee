@@ -161,9 +161,9 @@ angular.module("votacoesCamaraApp")
       scope.margin = margin
       scope.scales = buildScales()
       scope.activeCell = {}
-      scope.order = 'count'
-      scope.$watch 'order', (order) ->
+      scope.order = "count"
+      scope.$watch "order", (order) ->
         reorder(order) if order and reorder
-      scope.$watch 'graph', (graph) ->
+      scope.$watch "graph", (graph) ->
         render(element[0], graph, scope.order) if graph
   )
