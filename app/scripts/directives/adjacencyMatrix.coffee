@@ -155,15 +155,19 @@ angular.module("votacoesCamaraApp")
     scope:
       graph: "="
       activeCell: "="
+      orderId: "="
+      orders: "="
     link: (scope, element, attrs) ->
       _scope = scope
       _setupSizesAndXScale(scope, element)
       scope.margin = margin
       scope.scales = buildScales()
       scope.activeCell = {}
-      scope.order = "count"
-      scope.$watch "order", (order) ->
-        reorder(order) if order and reorder
+      scope.orders =
+        count: { id: "count", label: "Por coesão" }
+        party: { id: "party", label: "Por partido" }
+      scope.$watch "orderId", (orderId) ->
+        reorder(orderId) if orderId and reorder
       scope.$watch "graph", (graph) ->
-        render(element[0], graph, scope.order) if graph
+        render(element[0], graph, scope.orderId) if graph
   )

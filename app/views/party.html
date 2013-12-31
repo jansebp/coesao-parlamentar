@@ -3,12 +3,14 @@
 </div>
 <div class="row">
   <div class="col-md-9">
-    <h2>Matriz de similaridade</h2>
-    <adjacency-matrix data-graph="graph" active-cell="activeCell"></adjacency-matrix>
+    <adjacency-matrix data-graph="graph" data-order-id="orderId" orders="orders" active-cell="activeCell"></adjacency-matrix>
   </div>
   <div class="col-md-3">
     <h2>Ano</h2>
-    <select ng-model="year" ng-options="year for year in party.years"></select>
+    <select class="form-control" ng-model="year" ng-options="year for year in party.years"></select>
+
+    <h2>Ordenação</h>
+    <select class="form-control" ng-model="orderId" ng-options="k as v.label for (k, v) in orders"></select>
 
     <h2>Estatísticas</h2>
     <p><strong>{{graph.nodes.length}}</strong> deputados</p>
