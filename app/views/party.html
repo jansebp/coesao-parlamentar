@@ -1,31 +1,48 @@
 <div class="page-header">
   <h1 ng-cloak>{{party.label}}</h1>
+  <a href="{{filepath}}">Download</a>
 </div>
 <div class="row">
   <div class="col-md-9">
     <adjacency-matrix data-graph="graph" data-order-id="orderId" orders="orders" active-cell="activeCell"></adjacency-matrix>
   </div>
   <div class="col-md-3">
-    <h2>Ano</h2>
-    <select class="form-control" ng-model="year" ng-options="year for year in party.years"></select>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="year">Ano:</label>
+          <select id="year" class="form-control" ng-model="year" ng-options="year for year in party.years"></select>
+        </div>
+        <div class="form-group">
+          <label for="orderId">Ordenar por:</label>
+          <select id="orderId" class="form-control" ng-model="orderId" ng-options="k as v.label for (k, v) in orders"></select>
+        </div>
+      </div>
+    </div>
 
-    <h2>Ordenação</h>
-    <select class="form-control" ng-model="orderId" ng-options="k as v.label for (k, v) in orders"></select>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Estatísticas
+      </div>
+      <div class="panel-body">
+        <p><em>{{graph.nodes.length}}</em> deputados</p>
+        <p><em>{{graph.stats.filtered_voting_sessions}}</em> votações 
+        (de <em>{{graph.stats.total_voting_sessions}}</em>)</p>
+        <p ng-show="activeCell.colName">
+          {{activeCell.rowName}} ({{activeCell.rowPartido}}) votou igual a
+          {{activeCell.colName}} ({{activeCell.colPartido}})
+          {{activeCell.value | roundedPercentual}} das vezes
+        </p>
+      </div>
+    </div>
 
-    <h2>Estatísticas</h2>
-    <p><strong>{{graph.nodes.length}}</strong> deputados</p>
-    <p><strong>{{graph.stats.filtered_voting_sessions}}</strong> votações 
-    (de <strong>{{graph.stats.total_voting_sessions}}</strong>)</p>
-    <p ng-show="activeCell.colName">
-      {{activeCell.rowName}} ({{activeCell.rowPartido}}) votou igual a
-      {{activeCell.colName}} ({{activeCell.colPartido}})
-      {{activeCell.value | roundedPercentual}} das vezes
-    </p>
-
-    <h2>Histograma</h2>
-    <histogram data-graph="graph"></histogram>
-
-    <h2>Dados</h2> 
-    <a href="{{filepath}}">Download dos dados brutos</a>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Histograma
+      </div>
+      <div class="panel-body">
+        <histogram data-graph="graph"></histogram>
+      </div>
+    </div>
   </div>
 </div>

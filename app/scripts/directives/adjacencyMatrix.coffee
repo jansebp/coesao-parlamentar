@@ -164,8 +164,8 @@ angular.module("votacoesCamaraApp")
       scope.scales = buildScales()
       scope.activeCell = {}
       scope.orders =
-        count: { id: "count", label: "Por coesão" }
-        party: { id: "party", label: "Por partido" }
+        count: { id: "count", label: "Coesão" }
+        party: { id: "party", label: "Partido" }
       scope.$watch "orderId", (orderId) ->
         reorder(orderId) if orderId and reorder
       scope.$watch "graph", (graph) ->
