@@ -89,11 +89,12 @@ angular.module("votacoesCamaraApp")
 
     _drawLabels = (element) ->
       element.append("text")
-             .attr("y", x.rangeBand() / 2)
              .attr("dy", ".32em")
              .text((d) -> "#{d.name} (#{d.partido})")
              .attr("x", -6)
              .attr("text-anchor", "end")
+      svg.selectAll("text").transition().duration(transitionDuration)
+         .attr("y", x.rangeBand() / 2)
 
     _colorizeRows = (rows) ->
       cells = d3.select(this).selectAll(".cell")
