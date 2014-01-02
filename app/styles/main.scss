@@ -3,11 +3,16 @@
 }
 
 adjacency-matrix {
-  height: 720px;
-  width: 720px;
+  height: 600px;
+  width: 600px;
   display: block;
 }
 
 .dropdown-toggle {
   cursor: pointer;
+}
+
+svg text {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15px;
 }

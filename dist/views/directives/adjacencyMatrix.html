@@ -1,8 +1,19 @@
 <style>
-  .background { fill: url(#stripPattern); }
-  text { font: 10px sans-serif; }
-  .interactive svg:hover { fill-opacity: 0.3; }
-  svg .row.active { fill-opacity: 1; }
+  .background {
+    fill: url(#stripPattern);
+  }
+  .interactive svg:hover {
+    fill-opacity: 0.3;
+  }
+  .interactive .cell:hover {
+    stroke-width: 2px;
+    stroke: #111;
+  }
+  svg .row.active,
+  svg .row:hover {
+    fill-opacity: 1;
+    cursor: default;
+  }
   .scales {
     margin-top: 10px;
   }

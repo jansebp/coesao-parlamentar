@@ -3,7 +3,7 @@
 angular.module("votacoesCamaraApp")
   .directive("adjacencyMatrix", () ->
     svg = undefined
-    margin = {top: 10, right: 0, bottom: 10, left: 130}
+    margin = {top: 10, right: 0, bottom: 10, left: 200}
     width = 720
     height = 720
     _scope = undefined
@@ -144,7 +144,7 @@ angular.module("votacoesCamaraApp")
 
     _setupSizesAndXScale = (scope, margin, element) ->
       margin.left = if scope.showLabels
-                      130
+                      200
                     else
                       0
       width = element.width() || width
