@@ -1,7 +1,7 @@
 <style>
   .background { fill: url(#stripPattern); }
   text { font: 10px sans-serif; }
-  svg:hover { fill-opacity: 0.3; }
+  .interactive svg:hover { fill-opacity: 0.3; }
   svg .row.active { fill-opacity: 1; }
   .scales {
     margin-top: 10px;
@@ -13,7 +13,7 @@
     float: right;
     margin-right: -20px;
   }
-  .cell:hover {
+  .interactive .cell:hover {
     stroke-width: 2px;
     stroke: #111;
   }
@@ -28,7 +28,7 @@
   </defs>
 
   <g ng-attr-transform="translate({{margin.left}}, {{margin.top}})">
-    <rect class="background" ng-attr-width="{{width}}px" ng-attr-height="{{height}}px"></rect>
+    <rect class="background" ng-attr-width="{{width}}" ng-attr-height="{{height}}"></rect>
   </g>
 </svg>
 <div class="scales">

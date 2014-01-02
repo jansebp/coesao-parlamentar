@@ -4,7 +4,14 @@
 </div>
 <div class="row">
   <div class="col-md-9">
-    <adjacency-matrix data-graph="graph" data-order-id="orderId" orders="orders" active-cell="activeCell"></adjacency-matrix>
+    <adjacency-matrix
+    ng-class="{interactive: showLabels}"
+    data-show-labels="showLabels"
+    data-graph="graph"
+    data-order-id="orderId"
+    orders="orders"
+    active-cell="activeCell">
+    </adjacency-matrix>
   </div>
   <div class="col-md-3">
     <div class="panel panel-default">
@@ -28,7 +35,7 @@
         <p><em>{{graph.nodes.length}}</em> deputados</p>
         <p><em>{{graph.stats.filtered_voting_sessions}}</em> votações 
         (de <em>{{graph.stats.total_voting_sessions}}</em>)</p>
-        <p ng-show="activeCell.colName">
+        <p ng-show="activeCell.colName && showLabels">
           {{activeCell.rowName}} ({{activeCell.rowPartido}}) votou igual a
           {{activeCell.colName}} ({{activeCell.colPartido}})
           {{activeCell.value | roundedPercentual}} das vezes

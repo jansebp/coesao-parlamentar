@@ -6,6 +6,7 @@ angular.module("votacoesCamaraApp")
     lastAvailableYear = $scope.party.years[$scope.party.years.length - 1]
     $scope.year = $location.search().year || lastAvailableYear
     $scope.orderId = $location.search().order_id || "count"
+    $scope.showLabels = $scope.party.id == "mensaleiros"
 
     $scope.$watch "year", (year) ->
       $scope.filepath = "data/#{$scope.party.id}-#{year}.json"

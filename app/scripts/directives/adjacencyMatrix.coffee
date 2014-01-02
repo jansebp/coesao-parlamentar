@@ -141,7 +141,11 @@ angular.module("votacoesCamaraApp")
       _scope.$apply ->
         _scope.activeCell = {}
 
-    _setupSizesAndXScale = (scope, element) ->
+    _setupSizesAndXScale = (scope, margin, element) ->
+      margin.left = if scope.showLabels
+                      130
+                    else
+                      0
       width = element.width() || width
       height = element.height() || height
       transitionStartingPoint = width * 1.1
@@ -157,9 +161,9 @@ angular.module("votacoesCamaraApp")
       activeCell: "="
       orderId: "="
       orders: "="
+      showLabels: "="
     link: (scope, element, attrs) ->
       _scope = scope
-      _setupSizesAndXScale(scope, element)
       scope.margin = margin
       scope.scales = buildScales()
       scope.activeCell = {}
@@ -169,5 +173,7 @@ angular.module("votacoesCamaraApp")
       scope.$watch "orderId", (orderId) ->
         reorder(orderId) if orderId and reorder
       scope.$watch "graph", (graph) ->
-        render(element[0], graph, scope.orderId) if graph
+        if graph
+          _setupSizesAndXScale(scope, scope.margin, element)
+          render(element[0], graph, scope.orderId)
   )
