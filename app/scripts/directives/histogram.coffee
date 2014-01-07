@@ -8,6 +8,7 @@ angular.module("votacoesCamaraApp")
       graph: "="
     link: (scope, element, attrs) ->
       scope.tickFormat = $filter("roundedPercentual")
+      scope.tooltipContent = (key, x, y) -> y
       scope.$watch "graph", (graph) ->
         return unless graph
         values = (link.value for link in graph.links)
@@ -16,8 +17,6 @@ angular.module("votacoesCamaraApp")
         
         values = ([h.x, h.y/values.length] for h in histogram(values))
         scope.data = [
-          {
-            "values": values
-          }
+          values: values
         ]
   )
