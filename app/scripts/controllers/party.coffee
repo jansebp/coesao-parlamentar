@@ -5,7 +5,7 @@ angular.module("votacoesCamaraApp")
     $scope.party = parties[$state.params.party_id]
     lastAvailableYear = $scope.party.years[$scope.party.years.length - 1]
     $scope.year = $location.search().year || lastAvailableYear
-    $scope.orderId = $location.search().order_id || "count"
+    $scope.orderId = $location.search().order_id || "party"
     $scope.showLabels = $scope.party.id == "mensaleiros"
 
     $scope.$watch "year", (year) ->
