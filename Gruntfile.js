@@ -33,7 +33,7 @@ module.exports = function (grunt) {
         options: {
           stdout: true
         },
-        command: 'cd data; ruby adjacency-matrix.rb'
+        command: 'cd data && ruby adjacency-matrix.rb && ruby parties_details.rb'
       }
     },
 
