@@ -17,6 +17,10 @@
   </div>
   <div class="col-md-4 col-lg-5">
     <div class="row">
+      <h2>Ano</h2>
+      <select id="year" class="form-control" ng-model="year" ng-options="year for year in party.years"></select>
+    </div>
+    <div class="row">
       <h2>Dados</h2>
         <p><em>{{graph.nodes.length}}</em> deputados</p>
         <p><em>{{graph.stats.filtered_voting_sessions}}</em> votações 
