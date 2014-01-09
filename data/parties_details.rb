@@ -1,14 +1,47 @@
 require 'json'
 
-DATA_PATH = "../app/data"
-PARTY = "PMDB"
 PARTIES = {
-  "PT" => "Partido dos Trabalhadores",
-  "PSDB" => "Partido da Social Democracia Brasileira",
+  "DEM" => "Democratas",
+  "PAN" => "Partido Ação Nacional",
+  "PCdoB" => "Partido Comunista do Brasil",
+  "PDT" => "Partido Democrático Trabalhista",
+  "PEN" => "Partido Ecológico Nacional",
+  "PFL" => "Partido da Frente Liberal",
+  "PHS" => "Partido Humanosta da Solidariedade",
+  "PL" => "Partido Liberal",
   "PMDB" => "Partido do Movimento Democrático Brasileiro",
+  "PMN" => "Partido da Mobilização Nacional",
+  "PMR" => "Partido Municipalista Renovador",
+  "PP" => "Partido Progressista",
+  "PPB" => "Partido Progressista Brasileiro",
+  "PPL" => "Partido da Pátria Livre",
+  "PPS" => "Partido Popular Socialista",
+  "PR" => "Partido da República",
+  "PRB" => "Partido Republicano Brasileiro",
+  "PRONA" => "Partido de Reedificação da Ordem Nacional",
+  "PROS" => "Partido Republicano da Ordem Social",
+  "PRP" => "Partido Republicano Progressista",
+  "PRTB" => "Partido Renovador Trabalhista Brasileiro",
+  "PSB" => "Partido Socialista Brasileiro",
+  "PSC" => "Partido Social Cristão",
+  "PSD" => "Partido Social Democrátivo",
+  "PSDB" => "Partido da Social Democracia Brasileira",
+  "PSDC" => "Partido Social Democrata Cristão",
+  "PSL" => "Partido Social Liberal",
   "PSOL" => "Partido Socialismo e Liberdade",
+  "PST" => "Partido Social Trabalhista",
+  "PSTU" => "Partido Socialista dos Trabalhadores Unificado",
+  "PT" => "Partido dos Trabalhadores",
+  "PTB" => "Partido Trabalhista Brasileiro",
+  "PTC" => "Partido Trabalhista Cristão",
+  "PTN" => "Partido Trabalhista Nacional",
+  "PTdoB" => "Partido Trabalhista do Brasil",
+  "PV" => "Partido Verde",
+  "SDD" => "Solidariedade",
   "Mensaleiros" => "Deputados condenados no mensalão"
 }
+
+DATA_PATH = "../app/data"
 
 def do_it!(party)
   quartiles = {}

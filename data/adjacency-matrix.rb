@@ -3,7 +3,9 @@ require "json"
 require "./db"
 
 YEARS = (1998..2012)
-PARTIES = %w(PT PMDB PSOL PSDB)
+PARTIES = %w(DEM PAN PCdoB PDT PEN PFL PHS PL PMDB PMN PMR PP PPB PPL PPS PR
+             PRB PRONA PROS PRP PRTB PSB PSC PSD PSDB PSDC PSL PSOL PST PSTU PT
+             PTB PTC PTN PTdoB PV SDD)
 MENSALEIROS = ["Anderson Adauto", "Bispo Rodrigues", "Josias Gomes", "José Borba",
   "José Carlos Martinez", "José Dirceu", "José Genoíno", "José Guimarães",
   "José Janene", "José Mentor", "João Magno", "João Paulo Cunha",
