@@ -12,7 +12,17 @@ adjacency-matrix {
   cursor: pointer;
 }
 
+.dropdown-menu {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
 svg text {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 15px;
+}
+
+.nv-axisMaxMin text {
+  font-weight: normal !important;
 }

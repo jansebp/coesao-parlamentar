@@ -43,26 +43,26 @@ angular.module("votacoesCamaraApp")
         node.index = i
         node.count = 0
         matrix[i] = d3.range(n).map (j) -> { x: j, y: i, z: 0 }
-        parties_count[node.partido] ||= 0
-        parties_members[node.partido] ||= 0
-        parties_members[node.partido] += 1
+        parties_count[node.party] ||= 0
+        parties_members[node.party] ||= 0
+        parties_members[node.party] += 1
 
       graph.links.forEach (link) ->
         matrix[link.source][link.target].z += link.value
         matrix[link.source].name = nodes[link.source].name
-        matrix[link.source].partido = nodes[link.source].partido
+        matrix[link.source].party = nodes[link.source].party
         nodes[link.source].count += link.value
         nodes[link.target].count += link.value
         
-        parties_count[nodes[link.source].partido] += link.value / parties_members[nodes[link.source].partido]
-        parties_count[nodes[link.target].partido] += link.value / parties_members[nodes[link.target].partido]
+        parties_count[nodes[link.source].party] += link.value / parties_members[nodes[link.source].party]
+        parties_count[nodes[link.target].party] += link.value / parties_members[nodes[link.target].party]
 
       orders =
         party: d3.range(n).sort (a, b) ->
-          if (nodes[a].partido == nodes[b].partido)
+          if (nodes[a].party == nodes[b].party)
             nodes[b].count - nodes[a].count
           else
-            parties_count[nodes[b].partido] - parties_count[nodes[a].partido]
+            parties_count[nodes[b].party] - parties_count[nodes[a].party]
         count: d3.range(n).sort (a, b) -> nodes[b].count - nodes[a].count
 
       reorder = (order) ->
@@ -90,7 +90,7 @@ angular.module("votacoesCamaraApp")
     _drawLabels = (element) ->
       element.append("text")
              .attr("dy", ".32em")
-             .text((d) -> "#{d.name} (#{d.partido})")
+             .text((d) -> "#{d.name} (#{d.party})")
              .attr("x", -6)
              .attr("text-anchor", "end")
       svg.selectAll("text").transition().duration(transitionDuration)
@@ -114,7 +114,7 @@ angular.module("votacoesCamaraApp")
 
     _createGroups = (matrix, className, transform, exitTransform) ->
       groups = svg.selectAll(".#{className}")
-         .data(matrix, (d, i) -> "#{d.name}#{d.partido}") # FIXME: Adicionando o partido na chave faz com que, ao mudar de ano,
+         .data(matrix, (d, i) -> "#{d.name}#{d.party}") # FIXME: Adicionando o partido na chave faz com que, ao mudar de ano,
                                                           # parlamentares que trocaram de partido sumam e apareçam com outra linha.
                                                           # Seria massa ele só mudar o texto
       g = groups.enter().append("g")
@@ -128,13 +128,13 @@ angular.module("votacoesCamaraApp")
         if d[0].y == p.y
           _scope.$apply ->
             _scope.activeCell.rowName = d.name
-            _scope.activeCell.rowPartido = d.partido
+            _scope.activeCell.rowPartido = d.party
             _scope.activeCell.value = p.z
           true
         else if d[0].y == p.x
           _scope.$apply ->
             _scope.activeCell.colName = d.name
-            _scope.activeCell.colPartido = d.partido
+            _scope.activeCell.colPartido = d.party
           true
 
     _mouseout = (p) ->

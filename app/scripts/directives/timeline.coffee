@@ -7,6 +7,9 @@ angular.module("votacoesCamaraApp")
     scope:
       values: "="
     link: (scope, element, attrs) ->
-      scope.tickFormat = $filter("roundedPercentual")
+      scope.tickFormat = if attrs.showAsPercentual == "true"
+        $filter("roundedPercentual")
+      else
+        (v) -> v
       scope.tooltipContent = (key, x, y) ->
         "#{y} em #{x}"

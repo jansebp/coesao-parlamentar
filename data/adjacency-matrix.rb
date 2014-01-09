@@ -1,10 +1,14 @@
-require "pry"
 require "csv"
 require "json"
 require "./db"
 
-YEARS = (2000..2008)
-PARTIES = %w(PT PMDB PSOL)
+YEARS = (1998..2012)
+PARTIES = %w(PT PMDB PSOL PSDB)
+MENSALEIROS = ["Anderson Adauto", "Bispo Rodrigues", "Josias Gomes", "José Borba",
+  "José Carlos Martinez", "José Dirceu", "José Genoíno", "José Guimarães",
+  "José Janene", "José Mentor", "João Magno", "João Paulo Cunha",
+  "Paulo Rocha", "Pedro Corrêa", "Pedro Henry", "Professor Luizinho", "Roberto Jefferson",
+  "Romeu Queiroz", "Valdemar Costa Neto"]
 
 FILTER_THRESHOLD = 0.95
 
@@ -22,20 +26,27 @@ def votacao_filter(db, id)
   (sim.to_f / total) <= FILTER_THRESHOLD && (nao.to_f / total) <= FILTER_THRESHOLD
 end
 
-def generate_json(party, year)
+def generate_json(party, year, mensaleiros=nil)
   db = DB.open
 
   deputados = []
   deputados_index = {}
   links = {}
+  where = if mensaleiros
+            party = "mensaleiros"
+            mensaleiros = MENSALEIROS.map { |m| "\"#{m}\"" }
+            "nome IN (#{mensaleiros.join(", ")})"
+          else
+            "partido='#{party}'"
+          end
+  sql = <<-eos
+      SELECT * FROM votos WHERE #{where} AND voto IN ("Sim", "Não") AND
+        votacao_id IN
+        (SELECT id FROM votacoes WHERE
+         data > date("#{year}-01-01") AND data < date("#{year}-12-31"));
+    eos
 
-  votos = db.execute <<-eos
-    SELECT * FROM votos WHERE partido='#{party}' AND voto IN ("Sim", "Não") AND
-      votacao_id IN
-      (SELECT id FROM votacoes WHERE
-       data > date("#{year}-01-01") AND data < date("#{year}-12-31"));
-  eos
-
+  votos = db.execute sql
   if votos.empty?
     puts "[Matrix] Empty matrix for #{party} in #{year}. No votes in database."
     return
@@ -59,7 +70,10 @@ def generate_json(party, year)
 
   votacoes_deputados.each_pair do |nome, voto|
     deputados_index[nome] = deputados.length
-    deputados << { "name" => nome }
+    deputado = { "name" => nome, "uf" => voto[0][4] }
+    deputado["party"] = voto[0][3] if mensaleiros
+
+    deputados << deputado
   end
 
   links = {}
@@ -115,9 +129,11 @@ def generate_json(party, year)
   end
 end
 
+YEARS.each do |y|
+  # Generate for Mensaleiros
+  generate_json(nil, y, true)
 
-PARTIES.each do |p|
-  YEARS.each do |y|
+  PARTIES.each do |p|
     generate_json(p, y)
   end
 end

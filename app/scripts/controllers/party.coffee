@@ -8,11 +8,36 @@ angular.module("votacoesCamaraApp")
       lastAvailableYear = $scope.party.years[$scope.party.years.length - 1]
       $scope.year = $location.search().year || lastAvailableYear
       $scope.orderId = $location.search().order_id || "party"
-      $scope.medians = [
-        key: "Medians"
-        values: ([k, v] for own k, v of party.median)
+      $scope.quartiles = [
+        {
+          key: "Primeiro quartil"
+          values: ([k, v[0]] for own k, v of party.quartiles)
+        }
+        {
+          key: "Mediana"
+          values: ([k, v[1]] for own k, v of party.quartiles)
+        }
+        {
+          key: "Segundo quartil"
+          values: ([k, v[2]] for own k, v of party.quartiles)
+        }
       ]
-      console.log($scope.medians)
+      $scope.deputados = [
+        {
+          key: "Deputados"
+          values: ([k, v] for own k, v of party.deputados)
+        }
+      ]
+      $scope.sessions = [
+        {
+          key: "Totais"
+          values: ([k, v.total] for own k, v of party.sessions)
+        }
+        {
+          key: "Filtradas"
+          values: ([k, v.filtered] for own k, v of party.sessions)
+        }
+      ]
 
     $scope.$watch "year", (year) ->
       return unless year?
