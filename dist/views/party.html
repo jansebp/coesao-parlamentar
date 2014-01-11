@@ -17,8 +17,10 @@
     <div class="row">
       <h2>Dados</h2>
         <p><em>{{graph.nodes.length}}</em> deputados</p>
-        <p><em>{{graph.stats.filtered_voting_sessions}}</em> votações 
-        (de <em>{{graph.stats.total_voting_sessions}}</em>)</p>
+        <p>
+          <em>{{graph.stats.filtered_voting_sessions}}</em> de <em>{{graph.stats.total_voting_sessions}}</em>
+          votações exibidas
+        </p>
         <p ng-show="activeCell.colName && showLabels">
           {{activeCell.rowName}} ({{activeCell.rowPartido}}) votou igual a
           {{activeCell.colName}} ({{activeCell.colPartido}})
