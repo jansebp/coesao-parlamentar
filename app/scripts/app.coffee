@@ -23,6 +23,7 @@ angular.module("votacoesCamaraApp", ["ui.router", "ngRoute", "nvd3ChartDirective
         url: "/:party_id/widget"
         views:
           header: {}
+          footer: {}
           "":
             templateUrl: "views/party.widget.html"
             controller: "PartyCtrl"
