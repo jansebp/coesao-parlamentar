@@ -2,7 +2,7 @@ require "csv"
 require "json"
 require "./db"
 
-YEARS = (1998..2012)
+YEARS = (1999..2011)
 PARTIES = %w(DEM PAN PCdoB PDT PEN PFL PHS PL PMDB PMN PMR PP PPB PPL PPS PR
              PRB PRONA PROS PRP PRTB PSB PSC PSD PSDB PSDC PSL PSOL PST PSTU PT
              PTB PTC PTN PTdoB PV SDD)
@@ -23,9 +23,14 @@ def votacao_filter(db, id)
 
   sim = votos.select { |v| v[5] == "Sim" }.size
   nao = votos.select { |v| v[5] == "Não" }.size
+  abstencao = votos.select { |v| v[5] == "Abstenção" }.size
+  obstrucao = votos.select { |v| v[5] == "Obstrução" }.size
 
   total = votos.size
-  (sim.to_f / total) <= FILTER_THRESHOLD && (nao.to_f / total) <= FILTER_THRESHOLD
+  (sim.to_f / total) <= FILTER_THRESHOLD &&
+  (nao.to_f / total) <= FILTER_THRESHOLD &&
+  (abstencao.to_f / total) <= FILTER_THRESHOLD &&
+  (obstrucao.to_f / total) <= FILTER_THRESHOLD
 end
 
 def generate_json(party, year, mensaleiros=nil)
@@ -42,7 +47,7 @@ def generate_json(party, year, mensaleiros=nil)
             "partido='#{party}'"
           end
   sql = <<-eos
-      SELECT * FROM votos WHERE #{where} AND voto IN ("Sim", "Não") AND
+      SELECT * FROM votos WHERE #{where} AND voto IN ("Sim", "Não", "Abstenção", "Obstrução") AND
         votacao_id IN
         (SELECT id FROM votacoes WHERE
          data > date("#{year}-01-01") AND data < date("#{year}-12-31"));
